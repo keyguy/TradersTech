@@ -1,5 +1,5 @@
 //+------------------------------------------------------------------+
-//|                                                AwesomeNathan.mq4 |
+//|                                                EA Start Code.mq4 |
 //|                                                        Tim Black |
 //|                                    http://winnersedgetrading.com |
 //+------------------------------------------------------------------+
@@ -7,14 +7,13 @@
 #property link      "http://winnersedgetrading.com"
 
 #property copyright "Copyright © 2012, T Black & Associates"
-#property link      "http://www.tbaai.com"
 #include <stdlib.mqh>
 #include <stderror.mqh> 
 #include <OrderReliable_2011.01.07.mqh>
 #include <PcntTradeSize.mqh> 
 
-string   Title="AwesomeNathan"; 
-string   Prefix="AN_";
+string   Title="EAStartCode"; 
+string   Prefix="EASC_";
 string   Version="v0.10";
 datetime ExpireDate=D'2041.11.30 00:01'; 
 
@@ -121,6 +120,23 @@ void SetGV(string VarName,double VarVal)
       GlobalVariableSet(strVarName,VarVal);
       
    }  //void SetGV
+   
+   
+double GetGV(string VarName)
+   {
+   string strVarName = StringConcatenate(Prefix,Symbol(),"_",VarName);
+   double VarVal = -99999999;
+   
+   if(GlobalVariableCheck(strVarName))
+      {
+      VarVal = GlobalVariableGet(strVarName);
+      if(debug)
+         Print("###Get GV ",strVarName," Value=",VarVal);
+      }
+     
+   return(VarVal); 
+   }  //double GetGV(string VarName)
+      
    
    
 void HeartBeat(int TimeFrame=PERIOD_H1)
