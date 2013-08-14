@@ -18,7 +18,7 @@ int DetectTradeEvent(string PairName, int MagicNumber, datetime EntryTime, int T
    for(i = 0; i < TotalOrders; i++)
       {
       OrderSelect(i,SELECT_BY_POS);
-      if(OrderSymbol() == PairName && MagicNumber == OrderMagicNumber())
+      if(OrderSymbol() == PairName && (MagicNumber == -1 || MagicNumber == OrderMagicNumber()))
          {
          OrderFound = true;
          
@@ -44,3 +44,4 @@ int DetectTradeEvent(string PairName, int MagicNumber, datetime EntryTime, int T
    
    return(Status);
    }  //int DetectTradeEvent(string PairName, int MagicNumber, datetime EntryTime, int Type)
+   
