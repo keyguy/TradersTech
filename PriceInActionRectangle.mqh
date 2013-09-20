@@ -32,7 +32,7 @@
 
 bool fPIARPriceInRect,fPIARPriceNearRect,fPIARTimeInRect;
 
-string PriceInActionRectangle(color ActionColor,int NearRectPips=5,int TF=0)
+string PriceInActionRectangle(color ActionColor=Blue,int NearRectPips=5,int TF=0)
    {
    int i,TotalObjects=ObjectsTotal();
    string name,RectName="";
@@ -53,7 +53,7 @@ string PriceInActionRectangle(color ActionColor,int NearRectPips=5,int TF=0)
       {
       //first find if there are any action rectangles
       name = ObjectName(i);
-      if(ObjectGet(name,OBJPROP_COLOR))
+      if(ObjectType(name) == OBJ_RECTANGLE && ObjectGet(name,OBJPROP_COLOR) == ActionColor)
          {
          //if there is, is price in it or near it?
          Price1 = ObjectGet(name,OBJPROP_PRICE1);
@@ -62,14 +62,12 @@ string PriceInActionRectangle(color ActionColor,int NearRectPips=5,int TF=0)
          Time2 = ObjectGet(name,OBJPROP_TIME2);
          if(Price1 < Price2)
             {
-            if(Price1 < Bid < Price2)
+            if(Price1 < Bid && Bid < Price2)
                fPIARPriceInRect = true;
-            else if((MathAbs(Price1 - Bid) / AdjPoint < NearRectPips) || (MathAbs(Price2 - Bid) / AdjPoint < NearRectPips))
-               fPIARPriceNearRect = true;
             }  //if(Price1 < Price2)
-         else
+         if(Price1 >= Price2)
             {
-            if(Price2 < Bid < Price1)
+            if(Price2 < Bid && Bid < Price1)
                fPIARPriceInRect = true;
             }  //else
          //if not in it, near it?
@@ -82,7 +80,7 @@ string PriceInActionRectangle(color ActionColor,int NearRectPips=5,int TF=0)
             if(Time1 < iTime(NULL,TF,0) < Time2)
                fPIARTimeInRect = true;
             }  //if(Time1 < Time2)
-         else
+         if(Time1 >= Time2)
             {
             if(Time2 < iTime(NULL,TF,0) < Time1)
                fPIARTimeInRect = true;
